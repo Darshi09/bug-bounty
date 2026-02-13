@@ -158,111 +158,6 @@ npm run dev
 
 The frontend will run on `http://localhost:5173`
 
-## 📡 API Endpoints
-
-### Authentication
-- `POST /api/auth/register` - Register a new user
-- `POST /api/auth/login` - Login user
-
-### Bugs
-- `POST /api/bugs` - Create a new bug (Protected)
-- `GET /api/bugs` - Get all bugs
-- `GET /api/bugs/:id` - Get bug by ID with submissions
-
-### Submissions
-- `POST /api/bugs/:id/submissions` - Submit a solution (Protected)
-- `GET /api/bugs/:id/submissions` - Get all submissions for a bug
-
-### Approval
-- `POST /api/submissions/:id/approve` - Approve a submission (Protected, Bug Owner Only)
-
-### User
-- `GET /api/users/me` - Get current user profile (Protected)
-
-### Health Check
-- `GET /api/health` - Server health check
-
-## 🔐 Authentication
-
-The API uses JWT (JSON Web Tokens) for authentication. Include the token in the Authorization header:
-
-```
-Authorization: Bearer <your-token>
-```
-
-Tokens are automatically stored in localStorage after login/registration and included in all API requests.
-
-## 📝 API Request/Response Examples
-
-### Register User
-```bash
-POST /api/auth/register
-Content-Type: application/json
-
-{
-  "name": "John Doe",
-  "email": "john@example.com",
-  "password": "password123"
-}
-```
-
-### Create Bug
-```bash
-POST /api/bugs
-Authorization: Bearer <token>
-Content-Type: application/json
-
-{
-  "title": "SQL Injection Vulnerability",
-  "description": "Found SQL injection in login form",
-  "bountyAmount": 500
-}
-```
-
-### Submit Solution
-```bash
-POST /api/bugs/:bugId/submissions
-Authorization: Bearer <token>
-Content-Type: application/json
-
-{
-  "solutionDescription": "Use parameterized queries",
-  "proofUrl": "https://example.com/proof"
-}
-```
-
-## 🎯 Business Rules
-
-1. **Bug Creation**: Only authenticated users can create bugs
-2. **Submission Rules**:
-   - Bug creators cannot submit solutions to their own bugs
-   - Multiple users can submit solutions to the same bug
-   - Submissions are not allowed for closed bugs
-3. **Approval Process**:
-   - Only the bug creator can approve submissions
-   - Only one submission can be approved per bug
-   - On approval:
-     - Submission status changes to "Approved"
-     - Bug status changes to "Closed"
-     - Winner's totalEarnings increases by bountyAmount
-     - All other pending submissions are automatically rejected
-4. **Status Flow**:
-   - Bugs start as "Open"
-   - Can be manually set to "In Review" (if needed)
-   - Automatically set to "Closed" when a submission is approved
-
-## 🧪 Testing with Postman
-
-A Postman collection is included in the project. Import `postman_collection.json` into Postman to test all endpoints.
-
-### Postman Setup:
-1. Import the collection
-2. Set the `base_url` variable to `http://localhost:5000`
-3. Register a user first
-4. Copy the token from the register/login response
-5. Set the `token` variable in Postman
-6. Use the token in the Authorization header for protected routes
-
 ## 🔒 Security Features
 
 - Password hashing with bcryptjs
@@ -299,17 +194,6 @@ A Postman collection is included in the project. Import `postman_collection.json
 - `status` (Enum: Pending, Approved, Rejected)
 - `createdAt` (Date)
 
-## 🐛 Known Limitations
-
-1. No email verification
-2. No password reset functionality
-3. No file upload - proof URLs must be external links
-4. No pagination for bug/submission lists
-5. No search/filter functionality
-6. No real-time notifications
-7. No admin panel
-8. Single approval per bug (by design)
-
 ## 🚧 Future Enhancements
 
 - Email notifications for submissions and approvals
@@ -329,6 +213,3 @@ ISC
 
 Built as a full-stack project demonstration.
 
-## 🤝 Contributing
-
-This is a demonstration project. Feel free to fork and enhance!
