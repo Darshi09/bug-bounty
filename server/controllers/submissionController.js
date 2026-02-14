@@ -12,7 +12,6 @@ export const createSubmission = async (req, res) => {
     const { solutionDescription, proofUrl, proofType, proofFileName } = req.body;
     const bugId = req.params.id;
 
-    // Validation
     if (!solutionDescription) {
       return res.status(400).json({
         success: false,
@@ -27,7 +26,6 @@ export const createSubmission = async (req, res) => {
       });
     }
 
-    // Check if bug exists
     const bug = await Bug.findById(bugId);
     if (!bug) {
       return res.status(404).json({
@@ -36,7 +34,6 @@ export const createSubmission = async (req, res) => {
       });
     }
 
-    // Check if bug is closed
     if (bug.status === 'Closed') {
       return res.status(400).json({
         success: false,
@@ -44,7 +41,6 @@ export const createSubmission = async (req, res) => {
       });
     }
 
-    // Check if user is the bug creator
     if (bug.createdBy.toString() === req.user.id) {
       return res.status(403).json({
         success: false,
@@ -52,7 +48,6 @@ export const createSubmission = async (req, res) => {
       });
     }
 
-    // Create submission
     const submission = await Submission.create({
       bugId,
       submittedBy: req.user.id,
@@ -62,7 +57,6 @@ export const createSubmission = async (req, res) => {
       proofFileName: proofFileName || null
     });
 
-    // Populate user info
     await submission.populate('submittedBy', 'name email');
     await submission.populate('bugId', 'title bountyAmount');
 
@@ -93,7 +87,6 @@ export const getSubmissions = async (req, res) => {
   try {
     const bugId = req.params.id;
 
-    // Check if bug exists
     const bug = await Bug.findById(bugId);
     if (!bug) {
       return res.status(404).json({
@@ -134,7 +127,6 @@ export const approveSubmission = async (req, res) => {
   try {
     const submissionId = req.params.id;
 
-    // Find submission with bug details
     const submission = await Submission.findById(submissionId).populate('bugId');
     if (!submission) {
       return res.status(404).json({
@@ -151,7 +143,6 @@ export const approveSubmission = async (req, res) => {
       });
     }
 
-    // Check if user is the bug creator
     if (bug.createdBy.toString() !== req.user.id) {
       return res.status(403).json({
         success: false,
@@ -159,7 +150,6 @@ export const approveSubmission = async (req, res) => {
       });
     }
 
-    // Check if bug is already closed
     if (bug.status === 'Closed') {
       return res.status(400).json({
         success: false,
@@ -167,7 +157,6 @@ export const approveSubmission = async (req, res) => {
       });
     }
 
-    // Check if submission is already approved
     if (submission.status === 'Approved') {
       return res.status(400).json({
         success: false,
@@ -175,25 +164,20 @@ export const approveSubmission = async (req, res) => {
       });
     }
 
-    // Start transaction-like operations
-    // Update submission status
     submission.status = 'Approved';
     await submission.save();
 
-    // Update bug status and winner
     bug.status = 'Closed';
     bug.winner = submission.submittedBy;
     bug.rewarded = true;
     await bug.save();
 
-    // Update winner's total earnings
     const winner = await User.findById(submission.submittedBy);
     if (winner) {
       winner.totalEarnings += bug.bountyAmount;
       await winner.save();
     }
 
-    // Reject all other pending submissions for this bug
     await Submission.updateMany(
       { 
         bugId: bug._id, 
@@ -203,7 +187,6 @@ export const approveSubmission = async (req, res) => {
       { status: 'Rejected' }
     );
 
-    // Populate submission data for response
     await submission.populate('submittedBy', 'name email totalEarnings');
     await submission.populate('bugId', 'title bountyAmount');
 

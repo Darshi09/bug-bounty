@@ -110,7 +110,6 @@ const BugList = () => {
                 to={`/bugs/${bug._id}`}
                 className="block glass bg-white/90 dark:bg-gray-800/90 rounded-xl sm:rounded-2xl shadow-lg hover:shadow-2xl card-hover p-4 sm:p-6 border border-gray-200/50 dark:border-gray-700/50 relative overflow-hidden group"
               >
-                {/* Shimmer effect on hover */}
                 <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                   <div className="shimmer absolute inset-0"></div>
                 </div>

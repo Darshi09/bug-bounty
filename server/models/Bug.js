@@ -42,7 +42,6 @@ const bugSchema = new mongoose.Schema({
   }
 });
 
-// Index for better query performance
 bugSchema.index({ status: 1, createdAt: -1 });
 
 export default mongoose.model('Bug', bugSchema);

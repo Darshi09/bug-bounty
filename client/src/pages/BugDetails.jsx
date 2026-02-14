@@ -138,7 +138,6 @@ const BugDetails = () => {
         transition={{ delay: 0.1 }}
         className="glass bg-white/90 dark:bg-gray-900/90 rounded-2xl sm:rounded-3xl shadow-2xl p-4 sm:p-6 md:p-8 mb-4 sm:mb-6 border border-gray-200/50 dark:border-gray-700/50 backdrop-blur-xl relative"
       >
-        {/* Decorative gradient */}
         <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-olive-400/20 to-olive-600/20 rounded-full blur-3xl"></div>
         <div className="relative z-10">
         <div className="flex justify-between items-start mb-6">

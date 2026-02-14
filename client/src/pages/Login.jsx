@@ -43,7 +43,6 @@ const Login = () => {
         transition={{ duration: 0.5 }}
         className="max-w-md w-full space-y-8 glass bg-white/90 dark:bg-gray-900/90 p-10 rounded-3xl shadow-2xl border border-gray-200/50 dark:border-gray-700/50 backdrop-blur-xl relative overflow-hidden"
       >
-        {/* Decorative gradient circle - Olive Green */}
         <div className="absolute -top-20 -right-20 w-40 h-40 bg-gradient-to-br from-olive-400 to-olive-600 rounded-full opacity-20 blur-3xl"></div>
         <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-gradient-to-br from-olive-300 to-olive-500 rounded-full opacity-20 blur-3xl"></div>
         <div className="relative z-10">

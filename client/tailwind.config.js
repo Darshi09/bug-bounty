@@ -14,14 +14,13 @@ export default {
           200: '#d1dbb7',
           300: '#b3c28d',
           400: '#9aaf6f',
-          500: '#808000', // Classic olive green
-          600: '#6b8e23', // Olive drab
-          700: '#556b2f', // Dark olive
+          500: '#808000', 
+          600: '#6b8e23', 
+          700: '#556b2f', 
           800: '#4a5d23',
           900: '#3d4d1e',
-          // More visible button colors
-          btn: '#5a7a1f', // Darker olive for buttons
-          'btn-dark': '#4a5d23', // Even darker for hover
+          btn: '#5a7a1f',
+          'btn-dark': '#4a5d23', 
         },
         primary: {
           50: '#f5f7f0',

@@ -41,7 +41,6 @@ const submissionSchema = new mongoose.Schema({
   }
 });
 
-// Index for better query performance
 submissionSchema.index({ bugId: 1, status: 1 });
 submissionSchema.index({ submittedBy: 1 });
 

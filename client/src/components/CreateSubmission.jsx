@@ -3,8 +3,8 @@ import { motion } from "framer-motion";
 import { submissionService } from "../services/submissionService.js";
 
 const CreateSubmission = ({ bugId, onSuccess, onCancel }) => {
-  const [proofType, setProofType] = useState("image"); // 'image', 'video', 'file', 'url'
-  const [proofInputMode, setProofInputMode] = useState("link"); // 'link' | 'upload' (for image & video)
+  const [proofType, setProofType] = useState("image");
+  const [proofInputMode, setProofInputMode] = useState("link"); 
   const [formData, setFormData] = useState({
     solutionDescription: "",
     proofUrl: "",
@@ -38,8 +38,6 @@ const CreateSubmission = ({ bugId, onSuccess, onCancel }) => {
   };
 
   const handleFileUpload = async (file) => {
-    // For now, we'll convert file to data URL and store as URL
-    // In production, you'd upload to cloud storage (S3, Cloudinary, etc.)
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.onload = () => resolve(reader.result);
@@ -57,7 +55,6 @@ const CreateSubmission = ({ bugId, onSuccess, onCancel }) => {
       let proofUrl = formData.proofUrl;
       let proofFileName = null;
 
-      // Use upload for: file type, or image/video when input mode is upload
       const useUpload =
         proofType === "file" ||
         (proofType === "image" && proofInputMode === "upload") ||
@@ -145,7 +142,6 @@ const CreateSubmission = ({ bugId, onSuccess, onCancel }) => {
           />
         </div>
 
-        {/* Proof Type Selection */}
         <div>
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
             Proof Type *
@@ -220,7 +216,6 @@ const CreateSubmission = ({ bugId, onSuccess, onCancel }) => {
           </div>
         </div>
 
-        {/* Link vs Upload toggle for Image and Video */}
         {(proofType === "image" || proofType === "video") && (
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -263,9 +258,7 @@ const CreateSubmission = ({ bugId, onSuccess, onCancel }) => {
           </div>
         )}
 
-        {/* Proof Input based on type and mode */}
         <div>
-          {/* Show upload UI for: file type, or image/video when upload mode */}
           {proofType === "file" ||
           (proofType === "image" && proofInputMode === "upload") ||
           (proofType === "video" && proofInputMode === "upload") ? (

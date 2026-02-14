@@ -1,9 +1,6 @@
 import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
 
-/**
- * Generate JWT token
- */
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: '30d'
@@ -19,7 +16,6 @@ export const register = async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
-    // Validation
     if (!name || !email || !password) {
       return res.status(400).json({
         success: false,
@@ -27,7 +23,6 @@ export const register = async (req, res) => {
       });
     }
 
-    // Check if user already exists
     const userExists = await User.findOne({ email });
     if (userExists) {
       return res.status(400).json({
@@ -36,14 +31,12 @@ export const register = async (req, res) => {
       });
     }
 
-    // Create user
     const user = await User.create({
       name,
       email,
       password
     });
 
-    // Generate token
     const token = generateToken(user._id);
 
     res.status(201).json({
@@ -73,7 +66,6 @@ export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // Validation
     if (!email || !password) {
       return res.status(400).json({
         success: false,
@@ -81,7 +73,6 @@ export const login = async (req, res) => {
       });
     }
 
-    // Check if user exists and get password
     const user = await User.findOne({ email }).select('+password');
     if (!user) {
       return res.status(401).json({
@@ -90,7 +81,6 @@ export const login = async (req, res) => {
       });
     }
 
-    // Check password
     const isMatch = await user.matchPassword(password);
     if (!isMatch) {
       return res.status(401).json({
@@ -99,7 +89,6 @@ export const login = async (req, res) => {
       });
     }
 
-    // Generate token
     const token = generateToken(user._id);
 
     res.status(200).json({

@@ -10,7 +10,6 @@ export const createBug = async (req, res) => {
   try {
     const { title, description, bountyAmount } = req.body;
 
-    // Validation
     if (!title || !description || !bountyAmount) {
       return res.status(400).json({
         success: false,
@@ -25,7 +24,6 @@ export const createBug = async (req, res) => {
       });
     }
 
-    // Create bug
     const bug = await Bug.create({
       title,
       description,
@@ -33,7 +31,6 @@ export const createBug = async (req, res) => {
       createdBy: req.user.id
     });
 
-    // Populate creator info
     await bug.populate('createdBy', 'name email');
 
     res.status(201).json({
@@ -91,7 +88,6 @@ export const getBugById = async (req, res) => {
       });
     }
 
-    // Get submissions for this bug
     const submissions = await Submission.find({ bugId: bug._id })
       .populate('submittedBy', 'name email')
       .sort({ createdAt: -1 });

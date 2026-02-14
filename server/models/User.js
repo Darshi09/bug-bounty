@@ -19,7 +19,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Password is required'],
     minlength: [6, 'Password must be at least 6 characters'],
-    select: false // Exclude password from queries by default
+    select: false 
   },
   totalEarnings: {
     type: Number,
@@ -31,7 +31,6 @@ const userSchema = new mongoose.Schema({
   }
 });
 
-// Hash password before saving
 userSchema.pre('save', async function(next) {
   if (!this.isModified('password')) {
     return next();
@@ -41,12 +40,10 @@ userSchema.pre('save', async function(next) {
   next();
 });
 
-// Method to compare password
 userSchema.methods.matchPassword = async function(enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
-// Remove password from JSON output
 userSchema.methods.toJSON = function() {
   const obj = this.toObject();
   delete obj.password;

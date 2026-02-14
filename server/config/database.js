@@ -1,8 +1,5 @@
 import mongoose from 'mongoose';
 
-/**
- * Connect to MongoDB database
- */
 export const connectDB = async () => {
   const uri = process.env.MONGODB_URI || 'mongodb://localhost:27017/bugbounty';
   if (!uri || typeof uri !== 'string') {
